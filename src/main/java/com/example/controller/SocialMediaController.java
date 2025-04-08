@@ -16,7 +16,6 @@ import com.example.exception.*;
  */
 
  @RestController
- @RequestMapping("/localhost:8080")
 public class SocialMediaController {
 
     private final AccountService accountService;

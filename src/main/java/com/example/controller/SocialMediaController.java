@@ -28,13 +28,30 @@ public class SocialMediaController {
      * HANDLER METHODS
      */
 
+    /**
+     * Handler for registering a new user
+     * @param account
+     * @return ResponseEntity with the appropriate status and persisted account
+     */
     @PostMapping("/register")
     public ResponseEntity<Account> postAccount(@RequestBody Account account) {
-        System.out.println("INSIDE CONTROLLER!!!!!!!!!!!!!!!!!");
         Account newAccount = accountService.registerUser(account.getUsername(), account.getPassword());
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(newAccount);
+    }
+
+    /**
+     * Handler for logging in to an existing account
+     * @param account
+     * @return ResponseEntity with the appropriate status and account
+     */
+    @PostMapping("/login")
+    public ResponseEntity<Account> postLogin(@RequestBody Account account) {
+        Account loggedInAccount = accountService.userLogin(account.getUsername(), account.getPassword());
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(loggedInAccount);
     }
 
 
@@ -63,6 +80,16 @@ public class SocialMediaController {
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<String> handleUsernameExists(UsernameAlreadyExistsException ex) {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    /**
+     * Handle incorrect username/password
+     * @param ex
+     * @return ResponseEntity with a status of 401 UNAUTHORIZED
+     */
+    @ExceptionHandler(UsernameOrPasswordNotFoundException.class)
+    public ResponseEntity<String> handleUsernameOrPasswordNotFound(UsernameOrPasswordNotFoundException ex) {
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
 

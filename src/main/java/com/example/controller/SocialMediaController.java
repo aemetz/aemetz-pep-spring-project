@@ -90,6 +90,15 @@ public class SocialMediaController {
     }
 
 
+    @GetMapping("/messages/{messageId}")
+    public ResponseEntity<Message> getMessageById(@PathVariable int messageId) {
+        Message message = messageService.getMessageById(messageId);
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(message);
+    }
+
+
 
 
 

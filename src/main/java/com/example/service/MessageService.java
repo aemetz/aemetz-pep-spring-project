@@ -48,7 +48,6 @@ public class MessageService {
         }
     }
 
-
     /**
      * Get all messages
      * @return a List of message objects
@@ -58,7 +57,18 @@ public class MessageService {
         return retrievedMessages;
     }
 
-
+    /**
+     * Get a message based on its ID
+     * @param id
+     * @return a Message object (may be empty)
+     */
+    public Message getMessageById(int id) {
+        Optional<Message> message = messageRepository.findById(id);
+        if (message.isPresent()) {
+            return message.get();
+        }
+        return null;
+    }
 
     
 }

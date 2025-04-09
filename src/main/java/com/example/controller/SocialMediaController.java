@@ -19,13 +19,15 @@ import com.example.exception.*;
 public class SocialMediaController {
 
     private final AccountService accountService;
+    private final MessageService messageService;
 
-    public SocialMediaController(AccountService accountService) {
+    public SocialMediaController(AccountService accountService, MessageService messageService) {
         this.accountService = accountService;
+        this.messageService = messageService;
     }
 
     /*
-     * HANDLER METHODS
+     * ACCOUNT HANDLER METHODS
      */
 
     /**
@@ -35,7 +37,7 @@ public class SocialMediaController {
      */
     @PostMapping("/register")
     public ResponseEntity<Account> postAccount(@RequestBody Account account) {
-        Account newAccount = accountService.registerUser(account.getUsername(), account.getPassword());
+        Account newAccount = accountService.registerUser(account);
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(newAccount);
@@ -48,11 +50,31 @@ public class SocialMediaController {
      */
     @PostMapping("/login")
     public ResponseEntity<Account> postLogin(@RequestBody Account account) {
-        Account loggedInAccount = accountService.userLogin(account.getUsername(), account.getPassword());
+        Account loggedInAccount = accountService.userLogin(account);
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(loggedInAccount);
     }
+
+
+
+    /*
+     * MESSAGE HANDLER METHODS
+     */
+
+    /**
+     * Handler for posting a new message
+     * @param message
+     * @return ResponseEntity with the appropriate status and message
+     */
+    @PostMapping("/messages")
+    public ResponseEntity<Message> postMessage(@RequestBody Message message) {
+        Message createdMessage = messageService.createMessage(message);
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(createdMessage);
+    }
+
 
 
 
@@ -90,6 +112,16 @@ public class SocialMediaController {
     @ExceptionHandler(UsernameOrPasswordNotFoundException.class)
     public ResponseEntity<String> handleUsernameOrPasswordNotFound(UsernameOrPasswordNotFoundException ex) {
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
+    /**
+     * Handle invalid message parameters
+     * @param ex
+     * @return ResponseEntity with a status of 400 BAD REQUEST
+     */
+    @ExceptionHandler(InvalidMessageException.class)
+    public ResponseEntity<String> handleInvalidMessage(InvalidMessageException ex) {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 

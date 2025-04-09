@@ -10,6 +10,7 @@ import org.springframework.context.support.MessageSourceSupport;
 import com.example.entity.*;
 import com.example.exception.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,6 +47,18 @@ public class MessageService {
             return messageRepository.save(message);
         }
     }
+
+
+    /**
+     * Get all messages
+     * @return a List of message objects
+     */
+    public List<Message> getAllMessages() {
+        List<Message> retrievedMessages = messageRepository.findAll();
+        return retrievedMessages;
+    }
+
+
 
     
 }

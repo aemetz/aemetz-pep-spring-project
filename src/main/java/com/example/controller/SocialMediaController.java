@@ -8,6 +8,8 @@ import com.example.entity.*;
 import com.example.service.*;
 import com.example.exception.*;
 
+import java.util.List;
+
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller using Spring. The endpoints you will need can be
  * found in readme.md as well as the test cases. You be required to use the @GET/POST/PUT/DELETE/etc Mapping annotations
@@ -33,7 +35,7 @@ public class SocialMediaController {
     /**
      * Handler for registering a new user
      * @param account
-     * @return ResponseEntity with the appropriate status and persisted account
+     * @return ResponseEntity with status 200 OK and persisted account
      */
     @PostMapping("/register")
     public ResponseEntity<Account> postAccount(@RequestBody Account account) {
@@ -46,7 +48,7 @@ public class SocialMediaController {
     /**
      * Handler for logging in to an existing account
      * @param account
-     * @return ResponseEntity with the appropriate status and account
+     * @return ResponseEntity with status 200 OK and account
      */
     @PostMapping("/login")
     public ResponseEntity<Account> postLogin(@RequestBody Account account) {
@@ -65,7 +67,7 @@ public class SocialMediaController {
     /**
      * Handler for posting a new message
      * @param message
-     * @return ResponseEntity with the appropriate status and message
+     * @return ResponseEntity with status 200 OK and message
      */
     @PostMapping("/messages")
     public ResponseEntity<Message> postMessage(@RequestBody Message message) {
@@ -73,6 +75,18 @@ public class SocialMediaController {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(createdMessage);
+    }
+
+    /**
+     * Handler for getting all messages
+     * @return ResponseEntity with status 200 OK and a List of Message objects
+     */
+    @GetMapping("/messages")
+    public ResponseEntity<List<Message>> getAllMessages() {
+        List<Message> messages = messageService.getAllMessages();
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(messages);
     }
 
 

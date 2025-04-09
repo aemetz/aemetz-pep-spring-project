@@ -70,5 +70,19 @@ public class MessageService {
         return null;
     }
 
+    /**
+     * Delete a message based on its ID
+     * @param id
+     * @return 0 or 1, based on whether the message existed to begin with
+     */
+    public int deleteMessageById(int id) {
+        Optional<Message> message = messageRepository.findById(id);
+        if (message.isPresent()) {
+            messageRepository.deleteById(id);
+            return 1;
+        }
+        return 0;
+    }
+
     
 }

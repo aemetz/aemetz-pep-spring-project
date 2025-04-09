@@ -89,13 +89,36 @@ public class SocialMediaController {
             .body(messages);
     }
 
-
+    /**
+     * Handler for getting a message based on ID
+     * @param messageId
+     * @return ResponseEntity with status 200 OK and a Message object (or null)
+     */
     @GetMapping("/messages/{messageId}")
     public ResponseEntity<Message> getMessageById(@PathVariable int messageId) {
         Message message = messageService.getMessageById(messageId);
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(message);
+    }
+
+    /**
+     * Handler for Deleting a message based on its ID
+     * @param messageId
+     * @return ResponseEntity with status 200 OK and body of 1 if message was deleted, body null if it didn't exist
+     */
+    @DeleteMapping("/messages/{messageId}")
+    public ResponseEntity<Integer> deleteMessageById(@PathVariable int messageId) {
+        int rowsAffected = messageService.deleteMessageById(messageId);
+        if (rowsAffected == 0) {
+            return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(null);
+        } else {
+            return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(rowsAffected);
+        }
     }
 
 

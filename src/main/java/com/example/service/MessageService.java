@@ -114,6 +114,13 @@ public class MessageService {
     }
 
 
-
+    /**
+     * Get all messages posted by a user with id = accountId
+     * @param accountId
+     * @return List of Message objects (can be empty)
+     */
+    public List<Message> getMessagesByAccountId(int accountId) {
+        return messageRepository.findAllByPostedBy(accountId);
+    }
     
 }

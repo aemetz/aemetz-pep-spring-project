@@ -137,6 +137,18 @@ public class SocialMediaController {
 
 
 
+    /**
+     * Handler for getting all messages posted by a particular user
+     * @param accountId
+     * @return List of Message objects (may be empty)
+     */
+    @GetMapping("/accounts/{accountId}/messages")
+    public ResponseEntity<List<Message>> getMessagesByAccountId(@PathVariable int accountId) {
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(messageService.getMessagesByAccountId(accountId));
+    }
+
 
 
 

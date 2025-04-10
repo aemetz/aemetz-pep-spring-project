@@ -9,6 +9,7 @@ import com.example.service.*;
 import com.example.exception.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller using Spring. The endpoints you will need can be
@@ -121,6 +122,19 @@ public class SocialMediaController {
         }
     }
 
+    /**
+     * Handler for updating an existing message
+     * @param messageId
+     * @return ResponseEntity with status 200 OK and a body of the number of rows affected
+     */
+    @PatchMapping("/messages/{messageId}")
+    public ResponseEntity<Integer> patchMessageById(@PathVariable int messageId, @RequestBody Map<String, String> messageText) {
+        int rowsAffected = messageService.patchMessageById(messageId, messageText.get("messageText"));
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(rowsAffected);
+    }
+
 
 
 
@@ -137,7 +151,7 @@ public class SocialMediaController {
      */
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<String> handleBadUsernamePassword(InvalidCredentialsException ex) {
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     /**
@@ -147,7 +161,7 @@ public class SocialMediaController {
      */
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<String> handleUsernameExists(UsernameAlreadyExistsException ex) {
-        return new ResponseEntity<>(HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
     /**
@@ -157,7 +171,7 @@ public class SocialMediaController {
      */
     @ExceptionHandler(UsernameOrPasswordNotFoundException.class)
     public ResponseEntity<String> handleUsernameOrPasswordNotFound(UsernameOrPasswordNotFoundException ex) {
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 
     /**
@@ -167,7 +181,7 @@ public class SocialMediaController {
      */
     @ExceptionHandler(InvalidMessageException.class)
     public ResponseEntity<String> handleInvalidMessage(InvalidMessageException ex) {
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
 

@@ -84,5 +84,36 @@ public class MessageService {
         return 0;
     }
 
+
+    /**
+     * Patch/update a message based on its ID and new text
+     * @param id
+     * @param text
+     * @return 1 if successful
+     * @throws InvalidMessageException
+     */
+    public int patchMessageById(int id, String text) throws InvalidMessageException {
+        // If message ID does not exist, throw exception
+        Optional<Message> message = messageRepository.findById(id);
+        if (!message.isPresent()) {
+            throw new InvalidMessageException("No message with id " + id + " exists.");
+        }
+        
+        // If new text is invalid, throw exception
+        if (text.isBlank()) {
+            throw new InvalidMessageException("Message text cannot be blank.");
+        } else if (text.length() > 255) {
+            throw new InvalidMessageException("Message text cannot be over 255 characters.");
+        }
+
+        // Else, update the message and return 1
+        Message updatedMessage = message.get();
+        updatedMessage.setMessageText(text);
+        messageRepository.save(updatedMessage);
+        return 1;
+    }
+
+
+
     
 }

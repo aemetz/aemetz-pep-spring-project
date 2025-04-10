@@ -19,7 +19,6 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-
     /**
      * Persist a new account with the given username and password
      * @param account
@@ -67,8 +66,4 @@ public class AccountService {
             throw new UsernameOrPasswordNotFoundException("Username is incorrect");
         }
     }
-
-
-
-
 }
